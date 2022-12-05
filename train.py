@@ -131,18 +131,22 @@ def train(args):
     writer.close()
 
 
-args = argparse.Namespace()
-args.batch_size = 512
-args.learning_rate = 1e-3
-args.data_dir = '../dataset'
-args.dataset = 'fashion_mnist'
-args.device = 'cuda' if torch.cuda.is_available() else 'cpu'
-args.save_dir = './save'
-args.cont_training = False
-args.save_freq = 2
-args.eval_freq = 1
-args.num_epochs = 20
-args.img_ch = 1
-args.ch = 64
-args.num_classes = 10
-train(args)
+if __name__ == '__main__':
+    
+    parser = argparse.ArgumentParser('train classifier')
+    parser.add_argument('--save_dir', type=str, default='./save')
+    parser.add_argument('--data_dir', type=str, default='../dataset')
+    parser.add_argument('--dataset', type=str, default='mnist', choices=['mnist', 'fashion_mnist', 'svhn', 'cifar10', 'cifar100'])
+    parser.add_argument('--num_epochs', type=int, default=20)
+    parser.add_argument('--cont_training', type=bool, default=False)
+    parser.add_argument('--learning_rate', type=float, default=1e-3)
+    parser.add_argument('--batch_size', type=int, default=512)
+    parser.add_argument('--img_ch', type=int, default=1)
+    parser.add_argument('--ch', type=int, default=64)
+    parser.add_argument('--num_classes', type=int, default=10)
+    parser.add_argument('--save_freq', type=int, default=1)
+    parser.add_argument('--eval_freq', type=int, default=1)
+    parser.add_argument('--device', type=str, default='cuda' if torch.cuda.is_available() else 'cpu', choices=['cuda', 'cpu'])
+    args = parser.parse_args()
+    train(args)
+    
